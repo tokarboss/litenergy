@@ -38,11 +38,15 @@ html, body {
     justify-content: center;
 }
 
+/* Убедись, что game-container имеет четкие границы */
 .game-container {
     position: relative; 
     height: 100%; 
-    aspect-ratio: 9 / 16;
+    width: 100%; /* Добавлено */
     max-width: 100vw; 
+    display: flex; /* Добавлено для центровки */
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
 }
 
@@ -192,3 +196,4 @@ html, body {
     border-radius: 50%; display: flex; justify-content: center; align-items: center;
     border: 1px solid #ff0055; color: white; pointer-events: auto;
 }
+
