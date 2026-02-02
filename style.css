@@ -1,4 +1,4 @@
-/* Подключаем шрифты */
+/* Подключаем шрифты через импорт, чтобы они работали сразу */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700;900&display=swap');
 
 /* --- БАЗОВЫЕ НАСТРОЙКИ --- */
@@ -9,128 +9,336 @@
     touch-action: manipulation;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #000;
+body, html {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #0b0b0b;
+    /* Montserrat для общего текста */
     font-family: 'Montserrat', sans-serif;
-    /* Убираем возможные отступы на ПК */
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
+/* --- ОБЕРТКА И КОНТЕЙНЕР --- */
 .game-wrapper {
-    width: 100%;
-    max-width: 500px; /* Ограничение ширины для ПК, чтобы не растягивалось на весь монитор */
-    height: 100vh;
-    height: calc(var(--vh, 1vh) * 100);
     position: relative;
-    background: #111;
-    overflow: hidden;
+    width: 100vw; height: 100vh;
+    display: flex; justify-content: center; align-items: center;
 }
 
-/* --- КОНТЕЙНЕР ИГРЫ --- */
+.bg-container {
+    position: relative; height: 100%; display: flex; justify-content: center;
+}
+
 .game-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 5;
+    position: relative; height: 100%; aspect-ratio: 9 / 16;
+    max-width: 100vw; overflow: hidden;
 }
 
 .character-img {
-    position: absolute;
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover;
-    z-index: 1;
-}
-
-/* --- ЦЕНТРАЛЬНАЯ БАНКА (ФИКС ПОЗИЦИИ) --- */
-.can-anchor {
-    position: absolute;
-    top: 50%; /* Центр по вертикали */
-    left: 50%; /* Центр по горизонтали */
-    width: 45%; /* Размер в процентах от контейнера для адаптивности */
-    min-width: 180px;
-    max-width: 280px;
-    z-index: 20;
-    cursor: pointer;
-    touch-action: none;
-    /* Убираем начальный transform, он будет в анимации */
-}
-
-.can-graphic {
-    width: 100%;
-    height: auto;
-    display: block;
-    filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.4));
-    will-change: transform;
-    /* Всегда используем аппаратное ускорение */
-    transform: translate(-50%, -50%); 
-    animation: idleFloat 4s ease-in-out infinite;
-}
-
-.can-anchor:active .can-graphic {
-    transform: translate(-50%, -50%) scale(0.9);
-    animation: none;
+    width: 100%; height: 100%; object-fit: cover;
 }
 
 /* --- ИНТЕРФЕЙС (UI) --- */
 .ui-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 50; display: flex; flex-direction: column;
+    justify-content: space-between; pointer-events: none;
 }
 
 .score-panel {
-    pointer-events: auto;
-    align-self: center;
-    margin-top: 15%; /* Отступ сверху в процентах для ПК */
-    background: rgba(255, 255, 255, 0.95);
-    padding: 10px 20px;
-    border-radius: 20px;
-    border: 3px solid #ff0055;
-    text-align: center;
-    min-width: 180px;
+    align-self: center; margin-top: 50px; background: rgba(255, 255, 255, 0.95);
+    padding: 15px 30px; border-radius: 25px; text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6); pointer-events: auto;
+    border: 3px solid #ff0055; min-width: 220px;
 }
 
-/* --- АНИМАЦИИ (ФИКС ДЛЯ ПК) --- */
-@keyframes idleFloat {
-    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-    50% { transform: translate(-50%, -50%) translateY(-15px); }
+#score { 
+    font-family: 'Bebas Neue', sans-serif; 
+    font-size: 4rem; 
+    color: #000; 
+    line-height: 0.9; 
+    margin-bottom: 5px; 
+    letter-spacing: 1px;
 }
 
-/* --- ФУТЕР (МАГАЗИН) --- */
-.footer {
+.charge-rate { 
+    color: #ff0055; 
+    font-size: 0.9rem; 
+    font-weight: 900; 
+    text-transform: uppercase;
+}
+
+.level-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; color: #fff; background: #000;
+    display: inline-block; padding: 4px 15px; border-radius: 10px; 
+    margin-top: 8px; letter-spacing: 1px;
+}
+
+/* --- КНОПКА-БАНКА (ГЛАВНЫЙ КЛИКЕР) --- */
+.can-anchor {
+    position: absolute; 
+    left: 25%; 
+    top: 69%; 
+    width: 300px;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    cursor: pointer; 
+    z-index: 10; 
     pointer-events: auto;
-    padding-bottom: 30px;
-    text-align: center;
-    z-index: 110;
+    animation: levitation 3s infinite ease-in-out;
+    transform-origin: center center;
+}
+
+.can-graphic { 
+    width: 100%; 
+    filter: drop-shadow(0 0 30px rgba(255, 0, 85, 0.5)); 
+    transition: transform 0.05s ease; 
+}
+
+.can-anchor:active .can-graphic { transform: scale(0.92); }
+
+/* --- МАГАЗИН И ФУТЕР --- */
+.footer { 
+    width: 100%; display: flex; justify-content: center; 
+    padding-bottom: 40px; pointer-events: auto; 
 }
 
 .shop-btn {
     font-family: 'Bebas Neue', sans-serif;
-    background: #a26ff5;
-    color: white;
-    padding: 10px 40px;
-    font-size: 1.5rem;
-    border-radius: 15px;
-    border: 2px solid #fff;
+    background: #a26ff5; color: #ffffff; border: 3px solid #fff;
+    padding: 12px 45px; border-radius: 20px;
+    font-size: 1.8rem; cursor: pointer; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    transition: transform 0.2s;
+    letter-spacing: 1px;
+}
+
+.shop-btn:active { transform: scale(0.95); }
+
+/* --- СТИЛЬ МАГАЗИНА (LIT ENERGY STYLE) --- */
+.modal {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+.modal.active { display: flex; animation: fadeIn 0.3s ease; }
+
+.modal-content {
+    background: linear-gradient(145deg, #292828, #0f0f0f);
+    /* Изменено: теперь ширина 95% от экрана, но не больше 420px */
+    width: 95%; 
+    max-width: 420px; 
+    border-radius: 30px;
+    padding: 25px;
+    border: 2px solid #ff0055;
+    box-shadow: 0 0 40px rgba(255, 0, 85, 0.3);
+    color: #fff;
+    position: relative;
+    /* Добавим отступ снизу и сверху, чтобы на длинных экранах смотрелось лучше */
+    margin: 20px 0;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    margin: 0;
+    font-size: 2.2rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+#close-shop {
+    background: #ff0055;
+    border: none;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-weight: bold;
     cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+}
+
+.shop-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.shop-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.item-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: normal;
+    font-size: 1.4rem;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.item-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    color: #bbb; /* Чуть приглушил для иерархии */
+}
+
+.buy-btn {
+    font-family: 'Bebas Neue', sans-serif;
+    background: linear-gradient(180deg, #fce515 0%, #fbc02d 100%);
+    color: #000;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 12px;
+    font-size: 1.3rem;
+    font-weight: normal;
+    cursor: pointer;
+    min-width: 90px;
+    box-shadow: 0 4px 0 #c49000;
+    transition: all 0.1s;
+}
+
+.buy-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #c49000;
+}
+
+.buy-btn:disabled {
+    background: #333;
+    box-shadow: none;
+    color: #666;
+    opacity: 0.5;
+}
+
+.tasks-section {
+    margin-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.tasks-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: #ffeb3b; /* Желтый акцент для заданий */
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.task-item {
+    border: 1px dashed #ffeb3b !important; /* Пунктирная рамка для заданий */
+    background: rgba(252, 229, 21, 0.05) !important;
+}
+
+/* ОКНО ОТДЫХА */
+.rest-modal {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+    width: 85%; background: #000; border: 3px solid #fce515;
+    border-radius: 25px; padding: 30px; text-align: center; color: #fff; z-index: 2000;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.rest-modal.show { transform: translate(-50%, -50%) scale(1); }
+
+/* --- РАКЕТА --- */
+/* --- РАКЕТА --- */
+.rocket-event {
+    position: absolute; 
+    width: 100px; /* Было 80px, уменьшили до 50px */
+    z-index: 100; 
+    display: none; 
+    cursor: pointer; 
+    pointer-events: auto;
+    filter: drop-shadow(0 0 15px #fce515);
+}
+
+/* Также убедись, что картинка внутри контейнера подстраивается под этот размер */
+.rocket-event img {
+    width: 100%;
+    height: auto;
+}
+
+/* --- АЧИВКИ --- */
+.achievement-toast {
+    position: absolute; bottom: -120px; left: 50%; transform: translateX(-50%);
+    width: 300px; background: rgba(0, 0, 0, 0.95); border: 2px solid #ff0055;
+    border-radius: 20px; display: flex; align-items: center; padding: 15px;
+    z-index: 200; transition: bottom 0.5s ease-out;
+    box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
+}
+.achievement-toast.show { bottom: 40px; }
+.achievement-icon { font-size: 2.2rem; margin-right: 15px; }
+.achievement-desc { 
+    font-family: 'Montserrat', sans-serif;
+    color: #fff; 
+    font-size: 0.9rem; 
+    font-weight: 700;
+}
+
+/* --- ЭФФЕКТЫ И ЧАСТИЦЫ --- */
+.particle {
+    font-family: 'Bebas Neue', sans-serif;
+    position: absolute; color: #fce515; font-size: 2.5rem;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5); pointer-events: none; z-index: 1000;
+    animation: particleFly 0.7s ease-out forwards;
+}
+
+@keyframes particleFly {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+    100% { transform: translate(-50%, -150px) scale(1.3); opacity: 0; }
+}
+
+@keyframes levitation {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-10deg) translateY(0); }
+    50% { transform: translate(-50%, -50%) rotate(-10deg) translateY(-20px); }
+}
+
+/* --- АУДИО КОНТРОЛЬ --- */
+.audio-control {
+    position: absolute; 
+    top: 25px; 
+    left: 25px; 
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.7); 
+    width: 55px; 
+    height: 55px; 
+    border-radius: 50%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    cursor: pointer; 
+    pointer-events: auto; 
+    border: 2px solid #ff0055;
+    color: white; 
+    font-size: 1.6rem;
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
 }
