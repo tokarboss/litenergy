@@ -171,7 +171,7 @@ setInterval(() => { if (Math.random() > 0.7) spawnRocket(); }, 15000);
 if (elements.inviteBtn) {
     elements.inviteBtn.onclick = () => {
         const userId = tg.initDataUnsafe?.user?.id || 0;
-        const inviteLink = `https://t.me/твой_бот?start=${userId}`;
+        const inviteLink = `https://t.me/litvin_clicker_bot?start=${userId}`;
         const shareText = `Присоединяйся к Lit Energy Game! По моей ссылке дадут бонус ⚡`;
         tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(shareText)}`);
     };
@@ -180,7 +180,7 @@ if (elements.inviteBtn) {
 if (elements.taskSub) {
     elements.taskSub.onclick = () => {
         if (!isSubscribed) {
-            tg.openTelegramLink('https://t.me/твой_канал');
+            tg.openTelegramLink('https://t.me/fullSsshit');
             setTimeout(() => {
                 isSubscribed = true;
                 score += 5000;
@@ -241,5 +241,6 @@ setInterval(() => {
         updateUI();
     }
 }, 100);
+
 
 updateUI();
