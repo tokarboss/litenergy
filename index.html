@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lit Energy Game</title>
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <audio id="bg-city" loop preload="auto"><source src="city.mp3" type="audio/mpeg"></audio>
+    <audio id="rocket-sound" preload="auto"><source src="rocket.mp4" type="audio/mp4"></audio>
+    <audio id="click-sound" preload="auto"><source src="click-sound.mp3" type="audio/mpeg"></audio>
+
+    <div class="game-wrapper">
+        <div class="bg-container">
+            <div class="game-container">
+                <img src="character-bg.png" class="character-img" alt="Background">
+                
+                <div id="rocket" class="rocket-event">
+                    <img src="rocket.png" alt="Rocket">
+                </div>
+
+                <div class="audio-control" id="audio-toggle">🔊</div>
+
+                <div class="ui-layer">
+                    <div class="score-panel">
+                        <div id="score">0</div>
+                        <div class="charge-rate">
+                            КЛИК: +<span id="click-power-display">1</span> | 
+                            АВТО: +<span id="dps">0</span>/с
+                        </div>
+                        <div class="level-badge">LVL <span id="user-level">1</span></div>
+                    </div>
+
+                    <div id="click-btn" class="can-anchor">
+                        <img src="can.png" alt="Can" class="can-graphic">
+                    </div>
+
+                    <div class="footer">
+                        <button id="open-shop" class="shop-btn">🏪 МАГАЗИН</button>
+                    </div>
+                </div>
+
+                <div id="shop-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>МАГАЗИН</h2>
+                            <button id="close-shop">✕</button>
+                        </div>
+                        
+                        <div class="shop-list">
+                            <div class="shop-item">
+                                <div class="item-info">
+                                    <span class="item-name">💪 МУЛЬТИ-КЛИК</span>
+                                    <span class="item-desc">Увеличивает силу тапа на +1</span>
+                                </div>
+                                <button id="buy-multi" class="buy-btn">
+                                    <span id="multi-cost">50</span> ⚡
+                                </button>
+                            </div>
+                            
+                            <div class="shop-item">
+                                <div class="item-info">
+                                    <span class="item-name">🤖 АВТО-БОТ</span>
+                                    <span class="item-desc">Добывает энергию каждую секунду</span>
+                                </div>
+                                <button id="buy-auto" class="buy-btn">
+                                    <span id="auto-cost">100</span> ⚡
+                                </button>
+                            </div>
+
+                            <div class="shop-item">
+                                <div class="item-info">
+                                    <span class="item-name">🔥 КРИТ. ШАНС</span>
+                                    <span class="item-desc">Шанс на x5 за клик</span>
+                                </div>
+                                <button id="buy-crit" class="buy-btn">
+                                    <span id="crit-cost">500</span> ⚡
+                                </button>
+                            </div>
+
+                            <div class="tasks-section">
+                                <h3 class="tasks-title">БОНУСЫ</h3>
+                                
+                                <div class="shop-item task-item">
+                                    <div class="item-info">
+                                        <span class="item-name">📢 ПОДПИСКА</span>
+                                        <span class="item-desc">+5000 ⚡ за канал</span>
+                                    </div>
+                                    <button id="task-sub" class="buy-btn">ВЫПОЛНИТЬ</button>
+                                </div>
+
+                                <div class="shop-item task-item">
+                                    <div class="item-info">
+                                        <span class="item-name">🤝 ДРУЗЬЯ</span>
+                                        <span class="item-desc">Позвать друга (+10% бонуса)</span>
+                                    </div>
+                                    <button id="invite-friend" class="buy-btn">ПОЗВАТЬ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="achievement-container" class="achievement-toast">
+                    <div class="achievement-icon">🏆</div>
+                    <div class="achievement-info">
+                        <div id="achievement-text" class="achievement-desc">Достижение получено!</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
