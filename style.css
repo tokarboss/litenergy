@@ -73,24 +73,21 @@ body, html {
     margin-top: 8px; letter-spacing: 1px;
 }
 
-/* --- КНОПКА-БАНКА (ГЛАВНЫЙ КЛИКЕР) --- */
+/* Центрируем банку */
 .can-anchor {
-    position: absolute; 
-    left: 25%; 
-    top: 69%; 
-    width: 300px;
-    transform: translate(-50%, -50%) rotate(-10deg);
-    cursor: pointer; 
-    z-index: 10; 
-    pointer-events: auto;
-    animation: levitation 3s infinite ease-in-out;
-    transform-origin: center center;
+    position: absolute;
+    top: 69%;
+    left: 25%;
+    transform: translate(-50%, -50%); /* Идеальный центр */
+    width: 250px; /* Настрой размер под себя */
+    z-index: 10;
+    touch-action: manipulation; /* Убирает лишние задержки тапа */
 }
 
-.can-graphic { 
-    width: 100%; 
-    filter: drop-shadow(0 0 30px rgba(255, 0, 85, 0.5)); 
-    transition: transform 0.05s ease; 
+.can-graphic {
+    width: 100%;
+    height: auto;
+    pointer-events: none; /* Чтобы клик шел на кнопку, а не на картинку */
 }
 
 .can-anchor:active .can-graphic { transform: scale(0.92); }
@@ -341,4 +338,5 @@ body, html {
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
+
 }
